@@ -1,0 +1,43 @@
+from multiprocessing import Pool
+import os
+import random
+import time
+
+
+def msg_sj():
+    name = input(":")
+
+    new = name + '[copy]'
+    try:
+        os.mkdir(new)
+
+    except:
+        pass
+    ls = os.listdir(name)
+
+    po = Pool(30)
+    for f_nm in ls:
+        po.apply_async(rd_wt, (name, f_nm, new))
+
+    po.close()
+    po.join()
+
+
+def rd_wt(flod, name, new):
+
+    ctt = open(flod + '/' + name, 'rb')
+    ct = ctt.read().decode('utf-8')
+    time.sleep(random.randint(2, 5))
+    print(ct)
+    ctt.close()
+    cp = open(new + '/' + name, 'wb')
+    time.sleep(random.randint(2, 8))
+    cp.write(ct.encode('utf-8'))
+
+    cp.close()
+
+if __name__ == '__main__':
+
+    msg_sj()
+
+    print("---------")
